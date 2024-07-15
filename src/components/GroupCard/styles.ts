@@ -1,8 +1,7 @@
 import { UsersThree } from 'phosphor-react-native'
-import { TouchableOpacity } from 'react-native'
 import styled from 'styled-components/native'
 
-export const GroupCardContainer = styled(TouchableOpacity)`
+export const GroupCardContainer = styled.TouchableOpacity`
   height: 90px;
   width: 100%;
   padding: 24px;
