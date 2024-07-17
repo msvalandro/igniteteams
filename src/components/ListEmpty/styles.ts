@@ -1,4 +1,4 @@
-import styled from 'styled-components/native'
+import styled, { css } from 'styled-components/native'
 
 export const ListEmptyContainer = styled.View`
   flex: 1;
@@ -7,8 +7,11 @@ export const ListEmptyContainer = styled.View`
 `
 
 export const Message = styled.Text`
-  font-family: ${({ theme }) => theme.FONT_FAMILY.REGULAR};
-  font-size: ${({ theme }) => theme.FONT_SIZE.SM}px;
-  color: ${({ theme }) => theme.COLORS.GRAY_300};
   text-align: center;
+
+  ${({ theme }) => css`
+    font-family: ${theme.FONT_FAMILY.REGULAR};
+    font-size: ${theme.FONT_SIZE.SM}px;
+    color: ${theme.COLORS.GRAY_300};
+  `}
 `
