@@ -10,10 +10,7 @@ import { FlatList } from 'react-native'
 import { GroupsContainer } from './styles'
 
 export function Groups() {
-  const [groups, setGroups] = useState([
-    // 'Armada de Dumbledore',
-    // 'Comensais da Morte',
-  ])
+  const [groups, setGroups] = useState([])
 
   const navigation = useNavigation()
 
