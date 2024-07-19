@@ -8,9 +8,10 @@ import { ListEmpty } from '@components/ListEmpty'
 import { PlayerCard } from '@components/PlayerCard'
 import { useRoute } from '@react-navigation/native'
 import { playerAddByGroup } from '@storage/player/playerAddByGroup'
-import { playersGetByGroup } from '@storage/player/playersGetByGroup'
+import { playersGetByGroupAndTeam } from '@storage/player/playersGetByGroupAndTeam'
+import { PlayerStorageDTO } from '@storage/player/PlayerStorageDTO'
 import { AppError } from '@utils/AppError'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Alert, FlatList } from 'react-native'
 
 import { Form, HeaderList, NumberOfPlayers, PlayersContainer } from './styles'
@@ -21,7 +22,7 @@ interface RouteParams {
 
 export function Players() {
   const [team, setTeam] = useState('Time A')
-  const [players, setPlayers] = useState([])
+  const [players, setPlayers] = useState<PlayerStorageDTO[]>([])
   const [newPlayerName, setNewPlayerName] = useState('')
 
   const route = useRoute()
@@ -39,9 +40,6 @@ export function Players() {
 
     try {
       await playerAddByGroup(newPlayer, group)
-
-      const players = await playersGetByGroup(group)
-      console.log(players)
     } catch (error) {
       if (error instanceof AppError) {
         Alert.alert('Nova pessoa', error.message)
@@ -49,6 +47,19 @@ export function Players() {
         Alert.alert('Nova pessoa', 'Não foi possível adicionar.')
         console.log(error)
       }
+    }
+  }
+
+  async function fetchPlayersByTeam() {
+    try {
+      const playersByTeam = await playersGetByGroupAndTeam(group, team)
+      setPlayers(playersByTeam)
+    } catch (error) {
+      Alert.alert(
+        'Pessoas',
+        'Não foi possível carregar as pessoas do time selecionado.',
+      )
+      console.log(error)
     }
   }
 
