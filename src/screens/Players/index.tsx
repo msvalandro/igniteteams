@@ -8,6 +8,7 @@ import { ListEmpty } from '@components/ListEmpty'
 import { PlayerCard } from '@components/PlayerCard'
 import { useRoute } from '@react-navigation/native'
 import { playerAddByGroup } from '@storage/player/playerAddByGroup'
+import { playerRemoveByGroup } from '@storage/player/playerRemoveByGroup'
 import { playersGetByGroupAndTeam } from '@storage/player/playersGetByGroupAndTeam'
 import { PlayerStorageDTO } from '@storage/player/PlayerStorageDTO'
 import { AppError } from '@utils/AppError'
@@ -70,6 +71,16 @@ export function Players() {
     }
   }
 
+  async function handleRemovePlayer(playerName: string) {
+    try {
+      await playerRemoveByGroup(playerName, group)
+      await fetchPlayersByTeam()
+    } catch (error) {
+      Alert.alert('Remover pessoa', 'Não foi possível remover essa pessoa.')
+      console.log(error)
+    }
+  }
+
   useEffect(() => {
     fetchPlayersByTeam()
   }, [fetchPlayersByTeam])
@@ -115,7 +126,10 @@ export function Players() {
         data={players}
         keyExtractor={(item) => item.name}
         renderItem={({ item }) => (
-          <PlayerCard name={item.name} onRemove={() => {}} />
+          <PlayerCard
+            name={item.name}
+            onRemove={() => handleRemovePlayer(item.name)}
+          />
         )}
         ListEmptyComponent={() => (
           <ListEmpty message="Não há pessoas nesse time." />
